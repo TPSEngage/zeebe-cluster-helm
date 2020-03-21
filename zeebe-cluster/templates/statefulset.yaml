@@ -43,7 +43,7 @@ spec:
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         env:
         - name: ZEEBE_LOG_LEVEL
-          value: debug
+          value: {{ .Values.global.logLevel | quote }}
         - name: ZEEBE_PARTITIONS_COUNT
           value: {{ .Values.partitionCount | quote }}
         - name: ZEEBE_CLUSTER_SIZE
@@ -83,6 +83,11 @@ spec:
           subPath: startup.sh
         - name: data
           mountPath: /usr/local/zeebe/data
+        {{- if .Values.log4j2 }}
+        - name: config
+          mountPath: /usr/local/zeebe/conf/log4j2.xml
+          subPath: log4j2.xml
+        {{- end }}
         securityContext:
           {{ toYaml .Values.podSecurityContext | indent 12 | trim }}
       volumes:

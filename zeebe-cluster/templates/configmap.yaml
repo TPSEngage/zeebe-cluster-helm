@@ -24,6 +24,10 @@ data:
     export ZEEBE_CONTACT_POINTS="${ZEEBE_CONTACT_POINTS}"
     
     exec /usr/local/zeebe/bin/broker
+  {{- if .Values.log4j2 }}
+  log4j2.xml: |
+    {{ .Values.log4j2 | indent 4 | trim }}
+  {{- end }}
   zeebe.cfg.toml: |
     {{ .Values.zeebeCfg }}
     # For more information about this configuration visit: https://docs.zeebe.io/operations/the-zeebecfgtoml-file.html
